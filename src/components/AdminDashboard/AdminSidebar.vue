@@ -2,7 +2,7 @@
 import SidebarLink from './SidebarComponents/SidebarLink.vue'
 import logo from '@/assets/img/logos/BlueLogo.svg'
 import productsIcon from '@/assets/icons/box-open.svg'
-// import ordersIcon from '@/assets/icons/shopping-bag.svg'
+import ordersIcon from '@/assets/icons/shopping-bag.svg'
 import salesBillingIcon from '@/assets/icons/euro-sign.svg'
 import LogoutButton from './SidebarComponents/LogoutButton.vue'
 
@@ -12,11 +12,11 @@ const sidebarLinks = [
     to: '/admin/products',
     iconPath: productsIcon
   },
-  // {
-  //   label: 'Orders',
-  //   to: '/admin/orders',
-  //   iconPath: ordersIcon
-  // },
+  {
+    label: 'Orders',
+    to: '/admin/orders',
+    iconPath: ordersIcon
+  },
   // {
   //   label: 'Sales and Billing',
   //   to: '/admin/sales-billing',
