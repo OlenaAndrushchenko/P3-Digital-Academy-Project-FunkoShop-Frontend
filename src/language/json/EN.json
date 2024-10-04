@@ -5,8 +5,64 @@
   "newArrivalsDescription": "Be the First to Own the Latest Funkos!",
   "login": "LOGIN",
   "register": "REGISTER",
-  "yourProfile": "Your Profile",
+  "yourProfile": "Profile",
   "logout": "Logout",
   "home": "Home",
-  "products": "Products"
+  "products": "Products",
+  "addToCart": "Add to Cart",
+  "description": "Description",
+  "quantity": "Qty.",
+  "productName": "Product Name",
+  "category": "Category",
+  "price": "Price",
+  "profile": {
+    "personalInformation": "Personal Information",
+    "usePermanentAddress": "Use a permanent address where you can receive the products.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "countryCode": "Country Code",
+    "phoneNumber": "Phone Number",
+    "country": "Country",
+    "city": "City",
+    "street": "Street address",
+    "region": "State / Region",
+    "postalCode": "ZIP / Postal code",
+    "changePassword": "Change Password",
+    "save": "Save",
+    "profileUpdatedSuccess": "Profile updated successfully",
+    "errorUpdatingProfile": "Error updating profile"
+  },
+  "footer": {
+    "copyright": "© 2024 All rights reserved. Copying the site and information is prohibited."
+  },
+  "developers": {
+    "developedBy": "DEVELOPED BY:"
+  },
+  "newsletter": {
+    "subscribeHeading": "Subscribe to Our Newsletter for Exclusive Offers!",
+    "subscribeDescription": "Get notified about new releases, discounts, and more.",
+    "enterEmail": "Enter email address",
+    "subscribe": "SUBSCRIBE"
+  },
+
+  "Sign in": "Sign in",
+  "Sign up": "Sign up",
+  "Password": "Password",
+  "confirmPassword": "Confirm Password",
+  "alert1" : "Incorrect username or password!",
+  "alert2" : "Error trying to login, please try again.",
+  "alert3" : "The email and password can't be empty!",
+  "alert4" : "The email already exists!",
+  "alert5" : "Error trying to register, please try again.",
+  "alert6" : "Passwords do not match!",
+
+  "shoppingCart": {
+    "shoppingCart": "Shopping Cart",
+    "total": "Total",
+    "emptyCart": "Your shopping cart is empty.",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "shipping": "Shipping and taxes calculated at checkout.",
+    "or": "or"
+  }
 }

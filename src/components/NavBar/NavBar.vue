@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import ShoppingCart from '../ShoppingCart/ShoppingCart.vue'
-import '@material-tailwind/html/scripts/popover.js';
+import '@material-tailwind/html/scripts/popover.js'
 import {
   Dialog,
   DialogPanel,
   PopoverGroup,
   TransitionChild,
-  TransitionRoot,
+  TransitionRoot
   /*   Popover,
     PopoverPanel,
     Tab,
@@ -18,12 +18,15 @@ import {
 } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LanguageSelector from './LanguageSelector.vue'
+import SearchButton from './SearchButton.vue'
 import ProfileMenu from './ProfileMenu.vue'
 import { useI18n } from 'vue-i18n'
-
+import { useAuthStore } from '@/stores/auth'
 
 const { t } = useI18n()
-const navigation = {
+const auth = useAuthStore()
+
+/* const navigation = {
   categories: [
     {
       id: 'Categories',
@@ -58,10 +61,10 @@ const navigation = {
     }
   ],
   pages: [
-    { name: `${t('home')}`, href: '/home' },
-    { name: `${t('products')}`, href: '/products' }
+    { name: `${t('home') || 'Home'}`, href: '/home' },
+    { name: `${t('products') || 'Products'}`, href: '/products' }
   ]
-}
+} */
 
 const open = ref(false)
 </script>
@@ -137,10 +140,20 @@ const open = ref(false)
                 </TabPanels>
               </TabGroup> -->
               <div class="space-y-6 border-t border-white px-4 py-6">
-                <div v-for="page in navigation.pages" :key="page.name" class="flow-root">
-                  <a :href="page.href" class="-m-2 block p-2 font-medium text-white">{{
-                    page.name
-                  }}</a>
+                <div class="flow-root">
+                  <a href="/home" class="-m-2 block p-2 font-medium text-white">
+                    {{ t('home') }}
+                  </a>
+                </div>
+                <div class="flow-root">
+                  <a href="/products" class="-m-2 block p-2 font-medium text-white">
+                    {{ t('products') }}
+                  </a>
+                </div>
+                <div class="flow-root" v-if="auth.user.role === 'ADMIN'">
+                  <a href="/admin" class="-m-2 block p-2 font-medium text-white">
+                    Dashboard
+                  </a>
                 </div>
               </div>
             </DialogPanel>
@@ -153,13 +166,17 @@ const open = ref(false)
       <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div>
           <div class="flex h-16 items-center">
-            <button type="button" class="relative rounded-md bg-white p-1 text-black lg:hidden" @click="open = true">
+            <button
+              type="button"
+              class="relative rounded-md bg-white p-1 mr-4 text-black lg:hidden"
+              @click="open = true"
+            >
               <span class="absolute -inset-0.5" />
               <span class="sr-only">Open menu</span>
               <Bars3Icon class="h-6 w-6" aria-hidden="true" />
             </button>
 
-            <div class="ml-4 flex lg:ml-0">
+            <div class="ml-4 lg:ml-0 lg:flex hidden">
               <RouterLink to="/">
                 <span class="sr-only">FunkoShop</span>
                 <img class="h-10 w-auto" src="../../assets/img/logos/WhiteLogo.svg" alt="" />
@@ -168,8 +185,15 @@ const open = ref(false)
 
             <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch">
               <div class="flex h-full space-x-8">
-                <a v-for="page in navigation.pages" :key="page.name" :href="page.href"
-                  class="flex items-center text-sm font-medium text-white hover:text-blueFunko-300">{{ page.name }}</a>
+                <a href="/home" class="flex items-center text-sm font-medium text-white hover:text-blueFunko-300">
+                  {{ t('home') }}
+                </a>
+                <a href="/products" class="flex items-center text-sm font-medium text-white hover:text-blueFunko-300">
+                  {{ t('products') }}
+                </a>
+                <a v-if="auth.user.role === 'ADMIN'" href="/admin" class="flex items-center text-sm font-medium text-white hover:text-blueFunko-300">
+                  Dashboard
+                </a>
                 <!-- <Popover v-for="category in navigation.categories" :key="category.name" class="flex" v-slot="{ open }">
                   <div class="relative flex">
                     <PopoverButton :class="[
@@ -229,11 +253,16 @@ const open = ref(false)
             </PopoverGroup>
 
             <div class="ml-auto flex items-center">
-              <LanguageSelector />
+              <div class="flow-root lg:ml-4">
+                <SearchButton />
+              </div>
+              <div class="ml-4 flow-root lg:ml-4">
+                <LanguageSelector />
+              </div>
               <div class="ml-4 flow-root lg:ml-4 bg-white rounded-md">
                 <ShoppingCart />
               </div>
-              <div class="ml-4 flow-root lg:ml-4  text-white">
+              <div class="ml-4 flow-root lg:ml-4 text-white">
                 <ProfileMenu />
               </div>
             </div>

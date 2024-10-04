@@ -5,8 +5,64 @@
   "newArrivalsDescription": "¡Sé el primero en tener los últimos Funkos!",
   "login": "INICIAR SESIÓN",
   "register": "REGISTRARSE",
-  "yourProfile": "Tu Perfil",
+  "yourProfile": "Perfil",
   "logout": "Cerrar sesión",
   "home": "Inicio",
-  "products": "Productos"
+  "products": "Productos",
+  "addToCart": "Añadir al carrito",
+  "description": "Descripción",
+  "quantity": "Cnt.",
+  "productName": "Nombre del producto",
+  "category": "Categoría",
+  "price": "Precio",
+  "profile": {
+    "personalInformation": "Información Personal",
+    "usePermanentAddress": "Utilice una dirección permanente para recibir los productos.",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
+    "countryCode": "Código de País",
+    "phoneNumber": "Teléfono",
+    "country": "País",
+    "city": "Población",
+    "street": "Dirección",
+    "region": "Estado / Región",
+    "postalCode": "Código Postal",
+    "changePassword": "Cambiar Contraseña",
+    "save": "Guardar",
+    "profileUpdatedSuccess": "Perfil actualizado correctamente",
+    "errorUpdatingProfile": "Error al actualizar el perfil"
+  },
+  "footer": {
+    "copyright": "© 2024 Todos los derechos reservados. Está prohibida la copia del sitio y de la información."
+  },
+  "developers": {
+    "developedBy": "DESARROLLADO POR:"
+  },
+  "newsletter": {
+    "subscribeHeading": "¡Suscríbete a Nuestro Boletín para Ofertas Exclusivas!",
+    "subscribeDescription": "Recibe notificaciones sobre nuevos lanzamientos, descuentos y más.",
+    "enterEmail": "Ingresa la dirección de correo electrónico",
+    "subscribe": "SUSCRIBIRSE"
+  },
+
+  "Sign in": "Iniciar sesión",
+  "Sign up": "Registrarse",
+  "Password": "Contraseña",
+  "confirmPassword": "Confirmar Contraseña",
+  "alert1" : "Credenciales incorrectas",
+  "alert2" : "Error al iniciar sesión, por favor intente nuevamente.",
+  "alert3" : "El email o la contraseña no pueden estar vacíos",
+  "alert4" : "El email ya existe",
+  "alert5" : "Error al registrar, por favor intente nuevamente.",
+  "alert6" : "Las contraseñas no coinciden",
+
+  "shoppingCart": {
+    "shoppingCart": "Carrito",
+    "total": "Total",
+    "emptyCart": "Tu carrito esta vacío.",
+    "checkout": "Finalizar compra",
+    "continueShopping": "Continuar comprando",
+    "shipping": "Envío e impuestos calculados al finalizar la compra.",
+    "or": "o"
+  }
 }

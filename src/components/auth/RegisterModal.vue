@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
+import { useI18n } from 'vue-i18n'
 
 const password = ref('')
 const passwordAgain = ref('')
@@ -8,6 +9,11 @@ const email = ref('')
 const textAlert = ref("")
 
 const store = useAuthStore()
+
+const { t } = useI18n()
+
+const placeholderText = computed(() => t('Password'));
+const placeholderText2 = computed(() => t('confirmPassword'));
 
 
 async function register() {
@@ -36,16 +42,16 @@ async function register() {
           passwordAgain.value = '';
           email.value = '';
         } else {
-          textAlert.value = 'The email already exists!';
+          textAlert.value = t("alert4");
         }
       } catch (error) {
-        textAlert.value = 'Error trying to register, please try again.';
+        textAlert.value = t("alert5");
       }
     } else {
-      textAlert.value = 'Passwords do not match!';
+      textAlert.value = t("alert6");
     }
   } else {
-    textAlert.value = 'Email, or password cannot be null!';
+    textAlert.value = t("alert3");
   }
 }
 </script>
@@ -54,7 +60,7 @@ async function register() {
     <div
       class="relative flex h-auto max-w-md flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white border-2 rounded-xl border-gray-300/30 shadow-md">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img class="mx-auto h-15 w-auto" src="../assets/img/logos/BlueLogo.svg" alt="Your Company" />
+        <img class="mx-auto h-15 w-auto" src="@/assets/img/logos/BlueLogo.svg" alt="Your Company" />
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -69,7 +75,7 @@ async function register() {
           <div>
             <div class="mt-2">
               <input v-model="password" id="password" name="password" type="password" autocomplete="current-password"
-                placeholder="Password"
+                :placeholder="placeholderText"
                 class="block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-blueFunko-500 focus:ring-blueFunko-300 sm:text-sm sm:leading-6" />
             </div>
           </div>
@@ -77,7 +83,7 @@ async function register() {
           <div>
             <div class="mt-2">
               <input v-model="passwordAgain" id="confirmPassword" name="confirmPassword" type="password"
-                autocomplete="current-password" placeholder="Confirm Password"
+                autocomplete="current-password" :placeholder="placeholderText2"
                 class="block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-blueFunko-500 focus:ring-blueFunko-300 sm:text-sm sm:leading-6" />
             </div>
           </div>
@@ -91,7 +97,7 @@ async function register() {
           <div>
             <button type="submit"
               class="flex w-full justify-center rounded-md bg-blueFunko-700 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blueFunko-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blueFunko-800 easy-in-out duration-150 hover:scale-105 hover:delay-150">
-              Sign up
+              {{ t('Sign up') }}
             </button>
           </div>
         </form>

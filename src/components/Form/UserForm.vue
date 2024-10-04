@@ -4,6 +4,9 @@ import { ProfileStore } from '@/stores/Profile/ProfileStore';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref } from 'vue';
 import ChangePasswordForm from './ChangePasswordForm.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const openChangePassword = ref(false)
 
@@ -74,9 +77,8 @@ getProfile()
     <form class="w-full max-w-2xl px-4 py-8 mx-auto" @submit.prevent="setProfile">
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive the
-                    products.</p>
+                <h2 class="text-base font-semibold leading-7 text-gray-900">{{ t('profile.personalInformation') }}</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">{{ t('profile.usePermanentAddress') }}</p>
 
                 <div v-if="textAlert != ''"
                     :class="textAlert == 'Profile updated successfully' ? 'bg-green-500' : 'bg-red-500'"
@@ -87,8 +89,7 @@ getProfile()
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="col-span-6 sm:col-span-3">
-                        <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">First
-                            name</label>
+                        <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.firstName') }}</label>
                         <div class="mt-2">
                             <input v-model="firstName" type="text" name="firstname" id="firstname"
                                 autocomplete="given-name"
@@ -97,8 +98,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-6 sm:col-span-3">
-                        <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">Last
-                            name</label>
+                        <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.lastName') }}</label>
                         <div class="mt-2">
                             <input v-model="lastName" type="text" name="lastname" id="lastname"
                                 autocomplete="family-name"
@@ -107,8 +107,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-6 sm:col-span-2">
-                        <label for="countryCode" class="block text-sm font-medium leading-6 text-gray-900">Country
-                            Code</label>
+                        <label for="countryCode" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.countryCode') }}</label>
                         <div class="mt-2">
                             <select v-model="countryCode" id="countryCode"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -273,8 +272,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
-                        <label for="rigthnumber" class="block text-sm font-medium leading-6 text-gray-900">Phone
-                            Number</label>
+                        <label for="rigthnumber" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.phoneNumber') }}</label>
                         <div class="mt-2">
                             <input v-model="rigthNumber" type="number" name="rigthnumber" id="rigthnumber"
                                 autocomplete="family-name"
@@ -283,7 +281,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-6 sm:col-span-2">
-                        <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Country</label>
+                        <label for="country" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.country') }}</label>
                         <div class="mt-2">
                             <select v-model="country" id="country"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -363,7 +361,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
-                        <label for="city" class="block text-sm font-medium leading-6 text-gray-900">City</label>
+                        <label for="city" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.city') }}</label>
                         <div class="mt-2">
                             <input v-model="city" type="text" name="city" id="city" autocomplete="city"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
@@ -371,8 +369,7 @@ getProfile()
                     </div>
 
                     <div class="col-span-full">
-                        <label for="street" class="block text-sm font-medium leading-6 text-gray-900">Street
-                            address</label>
+                        <label for="street" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.street') }}</label>
                         <div class="mt-2">
                             <input v-model="street" type="text" name="street" id="street" autocomplete="street"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
@@ -380,8 +377,7 @@ getProfile()
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label for="region" class="block text-sm font-medium leading-6 text-gray-900">State /
-                            Region</label>
+                        <label for="region" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.region') }}</label>
                         <div class="mt-2">
                             <input v-model="region" type="text" name="region" id="region" autocomplete="region"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
@@ -389,9 +385,7 @@ getProfile()
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label for="postalcode" class="block text-sm font-medium leading-6 text-gray-900">ZIP /
-                            Postal
-                            code</label>
+                        <label for="postalcode" class="block text-sm font-medium leading-6 text-gray-900">{{ t('profile.postalCode') }}</label>
                         <div class="mt-2">
                             <input v-model="postalCode" type="text" name="postalcode" id="postalcode"
                                 autocomplete="postalcode"
@@ -404,8 +398,7 @@ getProfile()
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="submit" @click="openChangePassword = !openChangePassword"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Change
-                Password</button>
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ t('profile.changePassword') }}</button>
             <TransitionRoot as="template" :show="openChangePassword">
                 <Dialog class="relative z-10" @close="openChangePassword = !openChangePassword">
                     <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
@@ -430,7 +423,7 @@ getProfile()
                 </Dialog>
             </TransitionRoot>
             <button type="submit"
-                class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ t('profile.save') }}</button>
         </div>
     </form>
 </template>

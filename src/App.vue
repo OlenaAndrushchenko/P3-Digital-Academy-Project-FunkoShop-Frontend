@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router'
-import NavBar from './components/NavBar/NavBar.vue';
-import FooterComponent from './components/Footer/FooterComponent.vue';
+import NavBar from './components/NavBar/NavBar.vue'
+import FooterComponent from './components/Footer/FooterComponent.vue'
 
 const route = useRoute()
 </script>
@@ -10,9 +10,7 @@ const route = useRoute()
   <header>
     <NavBar />
   </header>
-  <div class="wrapper">
-
-  </div>
+  <div class="wrapper"></div>
 
   <RouterView />
   <footer v-if="route.path != '/404'">

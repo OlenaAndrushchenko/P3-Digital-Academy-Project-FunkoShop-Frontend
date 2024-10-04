@@ -13,11 +13,12 @@ export const useCartStore = defineStore('cart', () => {
   });
 
   const addProduct = (product, quantity = 1) => {
+    console.log('Producto a añadir:', product);
     const existingProduct = products.value.find(item => item.id === product.id);
     if (existingProduct) {
       existingProduct.quantity += quantity;
     } else {
-      products.value.push({ ...product, quantity });
+      products.value.push({ ...product, quantity, imageHash: product.imageHash });
     }
     saveCart();
   };
@@ -60,7 +61,7 @@ export const useCartStore = defineStore('cart', () => {
   return {
     products,       
     totalQuantity,  
-    totalPrice,     
+    totalPrice,    
     addProduct,     
     removeProduct,  
     updateQuantity, 

@@ -1,31 +1,33 @@
-import { ref } from 'vue';
-import { defineStore } from 'pinia';
-import axios from 'axios';
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import CategoryService from "./CategoryService";
 
-const BASE_URL = import.meta.env.VITE_API_ENDPOINT + '/categories';
 
-export const useCategoryStore = defineStore('categories', () => {
-  const categories = ref([]);
-  const isLoading = ref(false);
-  const error = ref(null);
+export const CategoryStore = defineStore('categories', () => {
 
-  const fetchCategories = async () => {
-    isLoading.value = true;
-    error.value = null;
-    try {
-      const response = await axios.get(BASE_URL);
-      categories.value = [{ id: null, name: 'All' }, ...response.data];
-    } catch (err) {
-      error.value = err.response?.data?.message || err.message;
-    } finally {
-      isLoading.value = false;
+    const categories = ref()
+    const isLoading = ref(false);
+    const error = ref(null);
+
+    function getCategories() {
+        isLoading.value = true;
+        error.value = null;
+        try {
+            const service = new CategoryService()
+            return service.getCategories()
+        } catch (err) {
+            error.value = err.response?.data?.message || err.message;
+        } finally {
+            isLoading.value = false;
+        }
     }
-  };
 
-  return {
-    categories,
-    isLoading,
-    error,
-    fetchCategories
-  };
+    function setCategory(category, accessToken) {
+        
+        const service = new CategoryService()
+        return service.setCategory(category, accessToken)
+
+    }
+
+    return { categories, isLoading, error, getCategories, setCategory };
 });

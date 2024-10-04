@@ -1,33 +1,34 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import { XMarkIcon, ShoppingBagIcon } from '@heroicons/vue/24/outline';
-import { useCartStore } from '@/stores/cart/cartStore';
+import { ref, computed } from 'vue'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { XMarkIcon, ShoppingBagIcon } from '@heroicons/vue/24/outline'
+import { useCartStore } from '@/stores/cart/cartStore'
+import { useI18n } from 'vue-i18n'
 
-const open = ref(false);
+const open = ref(false)
 
-const cartStore = useCartStore();
+const cartStore = useCartStore()
+
+const { t } = useI18n()
 
 const cartProducts = computed(() => {
-  return cartStore.products;
-});
+  return cartStore.products
+})
 
 const totalPrice = computed(() => {
-  return cartStore.totalPrice;
-});
+  return cartStore.totalPrice
+})
 
 const removeFromCart = (id) => {
   if (!cartProducts.value) {
-    return;
+    return
   }
 
-
-  const productExists = cartProducts.value.find(product => product.id === id);
-if (productExists) {
-  cartStore.removeProduct(id);
+  const productExists = cartProducts.value.find((product) => product.id === id)
+  if (productExists) {
+    cartStore.removeProduct(id)
+  }
 }
-};
-
 </script>
 
 <template>
@@ -67,7 +68,9 @@ if (productExists) {
                 <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                   <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                     <div class="flex items-start justify-between">
-                      <DialogTitle class="text-lg font-medium text-gray-900">Shopping cart</DialogTitle>
+                      <DialogTitle class="text-lg font-medium text-gray-900">{{
+                        t('shoppingCart.shoppingCart')
+                      }}</DialogTitle>
                       <div class="ml-3 flex h-7 items-center">
                         <button
                           type="button"
@@ -84,17 +87,15 @@ if (productExists) {
                     <div class="mt-8">
                       <div class="flow-root">
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
-                        
                           <li v-for="product in cartProducts" :key="product.id" class="flex py-6">
                             <div
                               class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
                             >
-                              <!-- <img
-                                :src="product.imageSrc" 
-                                :alt="product.imageAlt" 
+                              <img
+                                :src="product.imageHash"
+                                :alt="product.name"
                                 class="h-full w-full object-cover object-center"
-                              /> -->
-                              <img src="../../assets/img/CardImage/Groot.png" alt="Groot" class="h-full w-full object-cover object-center" />
+                              />
                             </div>
 
                             <div class="ml-4 flex flex-1 flex-col">
@@ -105,18 +106,18 @@ if (productExists) {
                                   <h3>
                                     <a :href="product.href">{{ product.name }}</a>
                                   </h3>
-                                  <p class="ml-4">{{ product.price }}€</p> 
+                                  <p class="ml-4">{{ product.price }}€</p>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">{{ product.category }}</p>
                               </div>
                               <div class="flex flex-1 items-end justify-between text-sm">
-                                <p class="text-gray-500">Qty {{ product.quantity }}</p> 
+                                <p class="text-gray-500">Qty {{ product.quantity }}</p>
 
                                 <div class="flex">
                                   <button
                                     type="button"
                                     class="font-medium text-red-500 hover:text-red-600"
-                                    @click="removeFromCart(product.id)" 
+                                    @click="removeFromCart(product.id)"
                                   >
                                     Remove
                                   </button>
@@ -124,9 +125,9 @@ if (productExists) {
                               </div>
                             </div>
                           </li>
-                          <template v-if="!cartProducts.length"> 
+                          <template v-if="!cartProducts.length">
                             <li class="flex py-6 text-center w-full text-gray-500">
-                              No products in the cart
+                              {{ t('shoppingCart.emptyCart') }}
                             </li>
                           </template>
                         </ul>
@@ -137,27 +138,24 @@ if (productExists) {
                   <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                     <div class="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>{{ totalPrice }}€</p> 
+                      <p>{{ totalPrice }}€</p>
                     </div>
                     <p class="mt-0.5 text-sm text-gray-500">
-                      Shipping and taxes calculated at checkout.
+                      {{ t('shoppingCart.shipping') }}
                     </p>
-                    <div class="mt-6">
-                      <a
-                        href="#"
-                        class="flex items-center justify-center rounded-md border border-transparent bg-blueFunko-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blueFunko-800"
-                        >Checkout</a
-                      >
-                    </div>
+                    <!-- <div class="mt-6">
+                      <a href="#"
+                        class="flex items-center justify-center rounded-md border border-transparent bg-blueFunko-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blueFunko-800">Checkout</a>
+                    </div> -->
                     <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                       <p>
-                        or{{ ' ' }}
+                        {{ t('shoppingCart.or') }}{{ ' ' }}
                         <button
                           type="button"
                           class="font-medium text-blueFunko-500 hover:text-blueFunko-600"
                           @click="open = false"
                         >
-                          Continue Shopping
+                          {{ t('shoppingCart.continueShopping') }}
                           <span aria-hidden="true"> &rarr;</span>
                         </button>
                       </p>

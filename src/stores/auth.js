@@ -16,7 +16,8 @@ export const useAuthStore = defineStore('auth', () => {
             role: '',
             isAuthenticated: false,
             access_token: '',
-            refresh_token: ''
+            refresh_token: '',
+            lang: 'en'
         }
     )
 

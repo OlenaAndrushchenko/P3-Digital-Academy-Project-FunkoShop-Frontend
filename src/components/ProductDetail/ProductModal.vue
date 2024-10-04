@@ -1,10 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-// import { StarIcon } from '@heroicons/vue/20/solid'
+import { StarIcon } from '@heroicons/vue/20/solid'
 import BadgeCard from '../Cards/BadgeCard.vue'
+import FavoriteIcon from '../Cards/FavoriteIcon.vue';
+
 import { useCartStore } from '../../stores/cart/cartStore';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 const props = defineProps({
   isOpen: {
@@ -22,8 +27,22 @@ const quantity = ref(1)
 
 const cartStore = useCartStore()
 
+const discountedPrice = computed(() => {
+  if (props.product.discount && props.product.discount > 0) {
+    const discountAmount = props.product.price * (props.product.discount / 100)
+    return (props.product.price - discountAmount).toFixed(2)
+  }
+  return props.product.price.toFixed(2)
+})
+
+const maxStockReached = computed(() => {
+  return quantity.value >= props.product.stock
+})
+
 const incrementQuantity = () => {
-  quantity.value++
+  if (quantity.value < props.product.stock) {
+    quantity.value++
+  }
 }
 
 const decrementQuantity = () => {
@@ -32,24 +51,34 @@ const decrementQuantity = () => {
   }
 }
 
-// const productImage = computed(() => {
-//   if (!props.product.image) return '';
-//   return props.product.image.startsWith('http')
-//     ? props.product.image
-//     : new URL(`../assets/img/CardImage/${props.product.image}`, import.meta.url).href;
-// });
-
 const addToCart = () => {
-  console.log('Adding to Cart Product:', props.product, 'Quantity:', quantity.value);
-  cartStore.addProduct({
-    id: props.product.id, 
-    name: props.product.name,
-    price: props.product.price,
-   
-  }, quantity.value); 
-  emit('close');
+  if (quantity.value <= props.product.stock) {
+    const productToAdd = {
+      id: props.product.id,
+      name: props.product.name,
+      price: discountedPrice.value,
+      imageHash: props.product.imageHash 
+    }; 
+    cartStore.addProduct(productToAdd, quantity.value);
+    emit('close');
+  } else {
+    console.error('Quantity exceeds stock');
+  }
 };
- 
+
+const productImageUrl = computed(() => {
+  if (props.product.imageHash) {
+    
+    const isBase64 = props.product.imageHash.startsWith('/') || props.product.imageHash.includes('base64');
+    
+    if (isBase64) {
+      return `data:image/png;base64,${props.product.imageHash}`;
+    } else {
+      return props.product.imageHash; 
+    }
+  }
+  return '';
+});
 </script>
 
 <template>
@@ -103,59 +132,56 @@ const addToCart = () => {
                   <div
                     class="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5"
                   >
-                    <!-- <img :src="productImage" :alt="props.product.name || 'Product Image'"
-                      class="object-cover object-center" /> -->
-                      <img src='../../assets/img/CardImage/Groot.png' alt="product image"
-                      class="object-cover object-center" />
+                    <img
+                      :src="productImageUrl"
+                      alt="product image"
+                      class="object-cover object-center"
+                    />
                   </div>
                   <div class="sm:col-span-8 lg:col-span-7">
-                    <div class="flex place-items-baseline justify-between pr-10">
-                      <p class="text-sm text-gray-900">
-                        {{ product.category?.name || 'Category' }}
-                      </p>
-                      <BadgeCard
-                        class="w-24"
-                        :id="product.name"
-                        :isAvailable="product.available"
-                        :isDiscount="product.discount == null ? false : true"
-                        :isNew="product.new"
-                        :discount="product.discount == null ? null : product.discount"
-                      />
+                    <div class="w-auto flex place-items-center justify-between pr-10">
+                      <div>
+                        <BadgeCard :id="product.name" :stock="product.stock"
+                          :isDiscount="product.discount > 0 ? true : false"
+                          :discount="product.discount > 0 ? product.discount : 0" :isNew="product.new" />
+                      </div>
+                        <FavoriteIcon :productId="product.id"/>
                     </div>
+                    <p class="text-sm text-gray-900 mt-2">
+                      {{ props.product.category?.name || t('category') }}
+                    </p>
                     <h2 class="text-2xl font-bold text-gray-900 sm:pr-12">
-                      {{ props.product.name || 'Product Name' }}
+                      {{ props.product.name || t('productName') }}
                     </h2>
 
                     <section aria-labelledby="information-heading">
                       <div class="py-4">
-                        <!-- <h4 class="sr-only">Reviews</h4> -->
+                        <h4 class="sr-only">Reviews</h4>
                         <div class="flex items-center">
                           <div class="flex items-center">
-                            <!-- <StarIcon
-                              v-for="rating in 5"
-                              :key="rating"
-                              :class="{
-                                'text-gray-900': (props.product.rating || 0) >= rating,
-                                'text-gray-200': (props.product.rating || 0) < rating,
-                                'h-5 w-5 flex-shrink-0': true
-                              }"
-                              aria-hidden="true"
-                            /> -->
+                            <StarIcon v-for="rating in 5" :key="rating" :class="{
+                              'text-gray-900': (props.product.rating || 0) >= rating,
+                              'text-gray-200': (props.product.rating || 0) < rating,
+                              'h-5 w-5 flex-shrink-0': true
+                            }" aria-hidden="true" />
                           </div>
                           <p class="sr-only">{{ props.product.rating || 0 }} out of 5 stars</p>
-                          <a
-                            href="#"
-                            class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                          >
-                            <!-- {{ props.product.reviewCount || 0 }} reviews -->
+                          <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                            {{ props.product.reviewCount || 0 }} reviews
                           </a>
                         </div>
                       </div>
-                      <h3 class="text-2xl text-gray-900 font-semibold">
-                        {{ props.product.price ? props.product.price.toFixed(2) : '0.00' }}€
+                      <p
+                        v-if="props.product.discount > 0"
+                        class="line-through text-gray-500 text-sm"
+                      >
+                        {{ props.product.price.toFixed(2) }}€
+                      </p>
+                      <h3 class="text-2xl font-semibold" :class="props.product.discount > 0 ? 'text-red-600' : 'text-gray-900'">
+                        {{ discountedPrice }}€
                       </h3>
                       <div class="py-4">
-                        <h4 class="text-lg text-gray-900 font-semibold">Description</h4>
+                        <h4 class="text-lg text-gray-900 font-semibold">{{ t('description') }}</h4>
                         <p class="text-sm text-gray-900">
                           {{ props.product.description || 'Description not available.' }}
                         </p>
@@ -174,20 +200,16 @@ const addToCart = () => {
                           >
                             -
                           </button>
-                          <input
-                            type="text"
-                            id="quantity"
-                            class="border-t border-b border-gray-300 w-16 text-center"
-                            v-model="quantity"
-                            readonly
-                          />
-                          <button
-                            @click="incrementQuantity"
-                            class="px-2 py-1 border rounded-r-md bg-gray-200 hover:bg-gray-300"
-                          >
+                          <input type="number" id="quantity" class="border-t border-b border-gray-300 w-16 text-center"
+                            v-model="quantity" :max="props.product.stock" :min="1" />
+                          <button @click="incrementQuantity" :disabled="maxStockReached"
+                            class="px-2 py-1 border rounded-r-md bg-gray-200 hover:bg-gray-300">
                             +
                           </button>
                         </div>
+                        <p v-if="maxStockReached" class="text-red-500 text-sm mt-1">
+                          {{ t('maxStockReached', { stock: props.product.stock }) }}
+                        </p>
                       </div>
                       <div class="mt-6">
                         <button
@@ -195,7 +217,7 @@ const addToCart = () => {
                           @click="addToCart"
                           class="w-full rounded-md border border-transparent bg-blueFunko-700 px-4 py-2 text-base font-medium text-white transition-all hover:bg-blueFunko-600 focus:outline-none"
                         >
-                          Add to Cart
+                          {{ t('addToCart') }}
                         </button>
                       </div>
                     </section>
@@ -209,3 +231,14 @@ const addToCart = () => {
     </Dialog>
   </TransitionRoot>
 </template>
+<style scoped>
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+</style>

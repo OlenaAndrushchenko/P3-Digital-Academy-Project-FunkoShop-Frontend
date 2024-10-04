@@ -32,6 +32,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/favorite',
+      name: 'favorite',
+      component: () => import('@/views/user/FavoriteView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/admin',
       component: () => import('@/views/admin/AdminLayout.vue'),
       meta: { requiresAdmin: true },
@@ -50,6 +56,11 @@ const router = createRouter({
           path: 'sales-billing',
           name: 'admin-sales-billing',
           component: () => import('@/views/admin/SalesBillingView.vue'),
+        },
+        {
+          path: 'categories',
+          name: 'admin-categories',
+          component: () => import('@/views/admin/CategoriesView.vue'),
         },
       ],
     },
@@ -75,6 +86,7 @@ router.beforeEach((to) => {
     store.user.isAuthenticated = localStorage.getItem("isAuthenticated") == "true" ? true : false;
     store.user.access_token = localStorage.getItem("access_token");
     store.user.refresh_token = localStorage.getItem("refresh_token");
+    store.user.lang = localStorage.getItem("lang");
   }
 
   if (to.meta.requiresAdmin && !(store.user.role == "ADMIN")) {

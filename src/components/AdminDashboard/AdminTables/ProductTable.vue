@@ -6,6 +6,7 @@ import BaseTable from '@/components/AdminDashboard/AdminTables/BaseTable.vue'
 import ProductTableRow from './ProductTableRow.vue'
 import BasePagination from '@/components/BaseComponents/BasePagination.vue'
 import ConfirmDeleteModal from '../AdminModals/ConfirmDeleteModal.vue'
+import EditProductModal from '../AdminModals/EditProductModal.vue'
 
 const productStore = useProductStore()
 
@@ -20,17 +21,42 @@ const {
 const itemsPerPage = 10
 const showDeleteModal = ref(false)
 const productToDelete = ref(null)
+const showEditModal = ref(false)
+const productToEdit = ref(null)
+
+const fetchProducts = (page = currentPage.value, size = itemsPerPage) => {
+  productStore.fetchAllProducts(page, size, 'createdAt', 'desc')
+}
 
 onMounted(() => {
-  productStore.fetchAllProducts(currentPage.value, itemsPerPage)
+  fetchProducts()
+})
+
+const refreshProducts = () => {
+  fetchProducts()
+}
+
+defineExpose({
+  refreshProducts
 })
 
 const handlePageChange = (newPage) => {
-  productStore.fetchAllProducts(newPage, itemsPerPage)
+  productStore.fetchAllProducts(newPage, itemsPerPage, 'createdAt', 'desc')
 }
 
 const handleEdit = (product) => {
-  console.log('Editing product:', product)
+  productToEdit.value = product
+  showEditModal.value = true
+}
+
+const handleProductUpdated = () => {
+  closeEditModal()
+  refreshProducts()
+}
+
+const closeEditModal = () => {
+  showEditModal.value = false
+  productToEdit.value = null
 }
 
 const handleDeleteClick = (productId) => {
@@ -40,7 +66,7 @@ const handleDeleteClick = (productId) => {
 
 const confirmDelete = async () => {
   await productStore.deleteProduct(productToDelete.value)
-  productStore.fetchAllProducts(currentPage.value, itemsPerPage)
+  fetchProducts()
   closeModal()
 }
 
@@ -61,7 +87,7 @@ const closeModal = () => {
   </div>
 
   <div v-else>
-    <BaseTable :headers="['Name', 'Category','Stock', 'Discount', 'Available', 'Actions']">
+    <BaseTable :headers="['Name', 'Category','Stock', 'Price', 'Discount', 'Actions']">
       <ProductTableRow 
         v-for="product in products" 
         :key="product.id" 
@@ -77,9 +103,18 @@ const closeModal = () => {
       @changePage="handlePageChange"
     />
 
+    <EditProductModal
+      v-if="showEditModal"
+      :show="showEditModal"
+      :productData="productToEdit"
+      @close="closeEditModal"
+      :onUpdate="handleProductUpdated"
+    />
+
     <ConfirmDeleteModal 
       v-if="showDeleteModal" 
-      @confirm="confirmDelete" 
+      @confirm="confirmDelete"
+      @click.self="closeModal" 
       @cancel="closeModal"
     />
   </div>
